@@ -1,3 +1,48 @@
+/*
+
+1. Create table
+2. insert
+3. showing
+
+*/
+USE phitron;
+
+DROP TABLE Student;
+
+CREATE TABLE Student(
+	Roll INT PRIMARY KEY,
+    Name VARCHAR(30) NOT NULL,
+    Age INT CHECK(Age >= 18),
+    ContactNo CHAR(11) UNIQUE,
+    Email VARCHAR(30),
+    
+    CONSTRAINT email_unique_const UNIQUE(Email)
+);
+
+INSERT INTO Student(Roll, Name, ContactNo, Email)
+VALUES (101, "Rocky", "01742460399", "rockyhaque99@gmail.com");
+
+INSERT INTO Student(Roll, Name, Email)
+VALUES (210, "Ali", "ali@gmail.com");
+
+SELECT * FROM Student;
+
+
+
+
+
+
+/*
+
+1. update table
+2. delete table
+3. search values
+
+If the table doesn't update or delete then use this command:
+>>SET SQL_SAFE_UPDATES = 0;
+after executes turn safe update on means make it 0 to 1
+
+*/
 USE phitron;
 
 DROP TABLE Student;
@@ -15,4 +60,42 @@ VALUES (101, "Rocky", "01742460399", "rockyhaque99@gmail.com");
 INSERT INTO Student(Roll, Name, Email)
 VALUES (210, "Ali", "ali@gmail.com");
 
+INSERT INTO Student(Roll, Name, ContactNo, Email)
+VALUES (301, "Rocky", "01842470399", "rh@gmail.com");
+
 SELECT * FROM Student;
+
+DELETE FROM Student
+WHERE ROLL = 301;
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Student
+SET Name = "Mr. Rocky", ContactNo = "01947234431"
+WHERE Roll = 101;
+
+SELECT Email, Name, Roll
+FROM Student
+WHERE Roll = 101;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
