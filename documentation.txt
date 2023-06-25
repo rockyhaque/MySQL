@@ -1,0 +1,18 @@
+USE phitron;
+
+DROP TABLE Student;
+
+CREATE TABLE Student(
+	Roll INT,
+    Name VARCHAR(30),
+    ContactNo CHAR(11),
+    Email VARCHAR(30)
+);
+
+INSERT INTO Student(Roll, Name, ContactNo, Email)
+VALUES (101, "Rocky", "01742460399", "rockyhaque99@gmail.com");
+
+INSERT INTO Student(Roll, Name, Email)
+VALUES (210, "Ali", "ali@gmail.com");
+
+SELECT * FROM Student;
