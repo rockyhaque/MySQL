@@ -16,10 +16,13 @@ The Payroll and HR Management System is designed to fully automate and streamlin
 - [Project Overview](#project-overview)
 - [Objectives](#objectives)
 - [Features](#features)
+- [ER Diagram](#er-diagram)
 - [Tables Creation & Data Insertion](#tables-creation-&_data-insertion)
 - [Basic Queries](#basic-queries)
 - [More Queries](#more-queries)
 - [Aggregation and Sorting](#aggregation-&-sorting)
+- [Normalization](#normalization)
+- [Conclusion](#conclusion)
 
 ### Project Overview
 
@@ -64,6 +67,11 @@ The Payroll and HR Management System is designed to fully automate and streamlin
     - Use subqueries and joins to extract detailed insights into employee data and departmental performance.
 
 
+### ER Diagram
+
+<img src="https://i.ibb.co.com/jhfjj4Y/er-diagram.png" width="" height="" />
+
+
 ### Tables Creation & Data Insertion
 Inserted data into regions, countries, locations, departments, jobs, employees, job_history, and benefits.
 
@@ -95,3 +103,25 @@ Inserted data into regions, countries, locations, departments, jobs, employees, 
 - `Top 3 Highest Paid:` Retrieve the top 3 highest-paid employees
 
 - `Maximum and Minimum Salaries:` Find the highest and lowest salaries.
+
+
+### Normalization
+
+`1st Normal Form (1NF):` Each table has organized data without repeating information. For example, the **employees** table ensures each row is unique with atomic values like employee_id, **first_name**, and **last_name**, meaning there are no duplicate entries or groupings.
+
+`2nd Normal Form (2NF):` All non-primary key information in a table depends entirely on the primary key. For instance, in the **employees** table, details like **email** and **salary** are fully related to the **employee_id**, ensuring no unnecessary data is stored multiple times.
+
+`3rd Normal Form (3NF):` There are no indirect relationships between non-key attributes. In other words, things like **salary** depend only on the **employee_id** and not on anything else, like the employee's job title. This avoids unnecessary redundancy and keeps the database clean and efficient.
+
+> Therefore, 3NF is the form your project adheres to, ensuring efficient data structure with minimal redundancy.
+
+
+### Conclusion
+
+The Payroll and HR Management System efficiently automates HR and payroll tasks using a 3rd Normal Form (3NF) database structure. This ensures data integrity, reduces redundancy, and maintains clear relationships between employees, jobs, and departments. The system demonstrates effective use of database principles for streamlined and scalable HR operations.
+
+
+
+
+
+
