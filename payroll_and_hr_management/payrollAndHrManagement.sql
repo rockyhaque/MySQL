@@ -147,7 +147,6 @@ SELECT * FROM job_history;
 
 SHOW TABLES;
 
-
 SELECT * FROM countries;
 SELECT * FROM departments;
 SELECT * FROM employees;
@@ -157,21 +156,17 @@ SELECT * FROM locations;
 SELECT * FROM regions;
 
 
--- 1.Single Row Function
+-- i.Single Row Function
 
 SELECT UPPER(first_name), LOWER(last_name) FROM employees WHERE employee_id = 100;
 
--- 2. Multiple Row Function:
+
+-- ii. Multiple Row Function:
 
 SELECT AVG(salary), MAX(salary), MIN(salary) FROM employees WHERE department_id = 10;
 
--- 3. Join:
 
-SELECT e.first_name, e.last_name, d.department_name
-FROM employees e
-JOIN departments d ON e.department_id = d.department_id;
-
--- 4. View:
+-- iii. View:
 
 CREATE VIEW employee_details AS
 SELECT e.first_name, e.last_name, j.job_title, d.department_name
@@ -180,9 +175,184 @@ JOIN jobs j ON e.job_id = j.job_id
 JOIN departments d ON e.department_id = d.department_id;
 
 
+-- iv. Creating a benefits Table with Auto-Increment
+
+CREATE TABLE benefits(
+	benefit_id INT AUTO_INCREMENT PRIMARY KEY,
+    benefit_name VARCHAR(100) NOT NULL,
+    benefit_description TEXT,
+    employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+INSERT INTO benefits(benefit_name, benefit_description, employee_id) VALUES
+('Health Insurance','Retirement Plan', 100),
+('Retirement Plan', 'Employer-matched retirement savings plan', 101),
+('Paid Vacation', 'Two weeks paid vacation annually', 102);
+
+SELECT * FROM benefits;
+
+-- Showing Final Table (8)
+
+SHOW TABLES;
+
+
+-- 1. Simple Query: Get Employees with Specific Jobs
+
+SELECT e.first_name, e.last_name, j.job_title
+FROM employees e
+JOIN jobs j ON e.job_id = j.job_id
+WHERE j.job_title = "IT Manager";
+
+
+-- 2. Subquery: Find Employees Earning Above Average Salary
+
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
 
 
 
+-- 3. Subquery: Find Departments with More Than 2 Employee
+
+-- NOTE: To show employee count check out 10 no query
+
+-- Adding more employees to department 10 (Administration)
+INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id) VALUES 
+(104, 'Rafid', 'Ahmed', 'rafid@gmail.com', '+8801542450320', '2023-05-10', 2, 16000.00, 100, 10),
+(105, 'Jamal', 'Mia', 'jamal@gmail.com', '+8801842650399', '2023-06-10', 3, 18000.00, 100, 10);
+
+-- Adding more employees to department 30 (IT)
+INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id) VALUES 
+(106, 'Charly', 'Davis', 'charlie.davis@gmail.com', '+8801542450325', '2023-05-18', 3, 14000.00, 102, 30);
+
+
+SELECT department_name
+FROM departments
+WHERE department_id IN (
+	SELECT department_id
+    FROM employees
+    GROUP BY department_id
+    HAVING COUNT(*) > 2
+);
+
+
+-- 4. Join with Subquery: Employees with Benefits
+
+SELECT e.first_name, e.last_name, b.benefit_name, b.benefit_description
+FROM employees e
+JOIN benefits b ON e.employee_id = b.employee_id;
+
+
+-- 5. Subquery: Find the Highest Paid Employee in Each Department
+
+SELECT e.first_name, e.last_name, e.salary, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE salary = (
+	SELECT MAX(salary)
+    FROM employees
+    WHERE department_id = e.department_id
+);
+
+
+-- 6. Subquery with Aggregation: Average Salary by Department
+
+-- NOTE: Find the average salary of employees in each department and list departments with an average salary higher than 15,000.
+
+
+SELECT department_name, AVG(salary) AS avg_salary
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+GROUP BY department_name
+HAVING AVG(salary) > 15000;
+
+
+-- 7. Subquery: Find the Number of Employees in Each Department
+
+-- NOTE: Find employees who have not been assigned any benefits.
+
+SELECT department_name, (
+		SELECT COUNT(*)
+		FROM employees e
+		WHERE e.department_id = d.department_id
+    ) AS employee_count
+FROM departments d;
+
+
+-- 8. Subquery: Find Employees Who Joined Recently
+
+-- NOTE: List the employees who were hired in the last 6 months.
+
+INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id) VALUES 
+(107, 'Rayan', 'Fakir', 'rayan@gmail.com', '+880142460379', '2024-03-10', 1, 25000.00, NULL, 10),
+(108, 'Prince', 'Mahmud', 'prince@gmail.com', '+8801772260100', '2024-06-15', 2, 15000.00, 100, 20);
+
+
+SELECT first_name, last_name, hire_date
+FROM employees
+WHERE hire_date > (SELECT DATE_SUB(CURDATE(), INTERVAL 6 MONTH));
+
+SELECT * FROM employees;
+
+
+-- 9. LEFT JOIN
+
+SELECT * FROM employees;
+SELECT * FROM departments;
+
+SELECT e.employee_id, e.first_name, e.last_name, d.department_name
+FROM employees e
+LEFT JOIN departments d ON e.department_id = d.department_id;
+
+
+-- 10. RIGHT JOIN
+
+SELECT e.employee_id, e.first_name, e.last_name, d.department_name
+FROM employees e
+RIGHT JOIN departments d ON e.department_id = d.department_id;
+
+
+-- 11. Find Employees with the Highest Salary
+
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary = (SELECT MAX(salary) FROM employees);
+
+
+-- 12. Find Employees Earning More Than the Average Salary
+
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+
+-- 13. Group Employees by Salary Range
+
+SELECT 
+  CASE 
+    WHEN salary < 10000 THEN 'Below 10K'
+    WHEN salary BETWEEN 10000 AND 20000 THEN '10K-20K'
+    WHEN salary > 20000 THEN 'Above 20K'
+  END AS salary_range,
+  COUNT(*) AS employee_count
+FROM employees
+GROUP BY salary_range;
+
+
+-- 14. Top 3 Highest Paid Employees
+
+SELECT first_name, last_name, salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 3;
+
+
+
+-- 15. Find the Maximum and Minimum Salaries
+
+SELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary
+FROM employees;
 
 
 
