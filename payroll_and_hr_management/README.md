@@ -16,10 +16,10 @@ The Payroll and HR Management System is designed to fully automate and streamlin
 - [Project Overview](#project-overview)
 - [Objectives](#objectives)
 - [Features](#features)
-- [Tables Creation & Data Insertion](#tables_creation_&_data_insertion)
-- [Basic Queries](#basic_queries)
-- [More Queries](#more_queries)
-- [Aggregation and Sorting](#aggregation_&_sortin)
+- [Tables Creation & Data Insertion](#tables-creation-&_data-insertion)
+- [Basic Queries](#basic-queries)
+- [More Queries](#more-queries)
+- [Aggregation and Sorting](#aggregation-&-sorting)
 
 ### Project Overview
 
