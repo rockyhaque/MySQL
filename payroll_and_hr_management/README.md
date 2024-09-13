@@ -1,6 +1,6 @@
 # Payroll and HR Management System
 
-<img src="https://i.ibb.co/wdGX0N1/java-script.png" align="right" width="110" height="110" />
+<img src="https://i.ibb.co.com/37qnDCB/database-management.png" align="right" width="110" height="110" />
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/rockyhaque/MySQL)
 ![GitHub stars](https://img.shields.io/github/stars/rockyhaque/MySQL?style=social)
